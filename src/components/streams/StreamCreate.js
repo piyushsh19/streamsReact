@@ -29,7 +29,7 @@ class StreamCreate extends React.Component{
         <div className="field">
             <label>{label}</label>
             <input {...input} autoComplete="off" />
-            <div>{this.renderError(meta)}</div>
+            {this.renderError(meta)}
         </div>
         );
     }
@@ -63,5 +63,6 @@ const validate = formValues => {
 }
 
 export default reduxForm({
-    form: 'streamCreate'
+    form: 'streamCreate',
+    validate: validate
 })(StreamCreate);
