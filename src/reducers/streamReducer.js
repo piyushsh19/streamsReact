@@ -9,7 +9,7 @@ import {
 } from '../actions/types';
 
 
-export default (state = {} ,actons) => {
+export default (state = {} ,action) => {
     switch (action.type) {
         case FETCH_STREAM:
             return {...state, [action.payload.id]: action.payload };
