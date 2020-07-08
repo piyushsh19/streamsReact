@@ -1,4 +1,5 @@
 import streams from "../apis/streams";
+import history from '../history';
 import { 
     SIGN_IN,
     SIGN_OUT,
@@ -22,11 +23,14 @@ export const signOut = () => {
     };
 };
 
-export const createStream = (formValues) =>  async dispatch => {
-
-    const response = await streams.post('/streams',formValues);
+export const createStream = (formValues) =>  async (dispatch, getState) => {
+    //Gets the user id from auth
+    const { userId} = getState().auth;
+    const response = await streams.post('/streams',{...formValues, userId});
 
     dispatch({ type: CREATE_STREAM, payload: response.data });
+    // To show history object in plain router
+    history.push('/');
 };
 
 export const fetchStreams = () =>  async dispatch => {
@@ -46,9 +50,10 @@ export const fetchStream = (id) =>  async dispatch => {
 
 export const editStream = (id, formValues) =>  async dispatch => {
 
-    const response = await streams.put(`/streams/${id}`, formValues);
+    const response = await streams.patch(`/streams/${id}`, formValues);
 
     dispatch({ type: EDIT_STREAM, payload: response.data });
+    history.push('/');
 };
 
 
@@ -56,4 +61,5 @@ export const deleteStream = (id) =>  async dispatch => {
     await streams.delete(`/streams/${id}`);
 
     dispatch({ type: DELETE_STREAM, payload: id });
+    history.push('/');
 };
